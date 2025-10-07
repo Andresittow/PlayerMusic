@@ -71,3 +71,37 @@ async def upload_song(
         if "file_path" in locals() and file_path.exists():
             file_path.unlink()
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/status")
+async def status():
+    return {
+        "message": "Server running",
+        "playlist_length": 0,
+        "recent_count": len(db_manager.get_all_songs()),
+        "upcoming": 0
+    }
+
+@app.get("/playlist")
+async def get_playlist():
+    return db_manager.get_all_songs()
+
+@app.post("/playlist/add")
+async def add_to_playlist(song_data: dict):
+    return {"message": "Playlist feature simulated", "playlist_length": 0}
+
+@app.post("/playlist/next")
+async def play_next():
+    return {"message": "Next song simulated", "song_id": None}
+
+@app.post("/playlist/prev")
+async def play_prev():
+    return {"message": "Previous song simulated", "song_id": None}
+
+@app.post("/queue/enqueue")
+async def enqueue_song(song_data: dict):
+    return {"message": "Queue feature simulated", "queue_size": 0}
+
+@app.post("/queue/dequeue")
+async def dequeue_song():
+    return {"message": "Queue dequeue simulated", "song_id": None}
+
