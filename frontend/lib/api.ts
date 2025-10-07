@@ -18,7 +18,7 @@ export interface ApiResponse<T> {
 class MusicAPI {
   async testConnection(): Promise<boolean> {
     try {
-      console.log("[v0] Testing backend connection...")
+      console.log("Testing backend connection...")
       const response = await fetch(`${API_BASE_URL}/status`, {
         method: "GET",
         headers: {
@@ -27,21 +27,21 @@ class MusicAPI {
       })
 
       if (response.ok) {
-        console.log("[v0] Backend connection successful")
+        console.log("Backend connection successful")
         return true
       } else {
-        console.error("[v0] Backend responded with error:", response.status)
+        console.error("Backend responded with error:", response.status)
         return false
       }
     } catch (error) {
-      console.error("[v0] Backend connection failed:", error)
+      console.error("Backend connection failed:", error)
       return false
     }
   }
 
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     try {
-      console.log(`[v0] Making request to: ${API_BASE_URL}${endpoint}`)
+      console.log(`Making request to: ${API_BASE_URL}${endpoint}`)
 
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
@@ -56,10 +56,10 @@ class MusicAPI {
       }
 
       const data = await response.json()
-      console.log(`[v0] Request successful for ${endpoint}:`, data)
+      console.log(`Request successful for ${endpoint}:`, data)
       return data
     } catch (error) {
-      console.error(`[v0] API request failed for ${endpoint}:`, error)
+      console.error(`API request failed for ${endpoint}:`, error)
       throw error
     }
   }
@@ -70,7 +70,7 @@ class MusicAPI {
   }
 
   async uploadSong(title: string, file: File, artist?: string): Promise<Song> {
-    console.log("[v0] Starting upload:", { title, artist, fileName: file.name })
+    console.log("Starting upload:", { title, artist, fileName: file.name })
 
     const formData = new FormData()
     formData.append("title", title)
@@ -87,15 +87,15 @@ class MusicAPI {
 
       if (!response.ok) {
         const errorText = await response.text()
-        console.error("[v0] Upload failed:", response.status, errorText)
+        console.error("Upload failed:", response.status, errorText)
         throw new Error(`Upload failed: ${response.status} - ${errorText}`)
       }
 
       const result = await response.json()
-      console.log("[v0] Upload successful:", result)
+      console.log("Upload successful:", result)
       return result
     } catch (error) {
-      console.error("[v0] Upload error:", error)
+      console.error("Upload error:", error)
       throw error
     }
   }

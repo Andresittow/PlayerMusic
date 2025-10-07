@@ -3,7 +3,6 @@ import os
 import sqlite3
 from typing import List, Optional
 from models import SongMeta, Song, SongCreate
-from datastructs import DoublyLinkedList
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "songs.db")
 MEDIA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "media")
@@ -110,9 +109,6 @@ class DatabaseManager:
         except Exception as e:
             print(f"❌ Error deleting song: {e}")
             raise
-
-# In-memory playlist (DoublyLinkedList of SongMeta.id)
-PLAYLIST = DoublyLinkedList()
 
 # Initialize the database
 db_manager = DatabaseManager()

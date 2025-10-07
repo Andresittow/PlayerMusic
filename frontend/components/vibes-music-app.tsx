@@ -108,7 +108,7 @@ export function VibesMusicApp() {
       const dllSongs = songs.map(convertToDLLSong)
       newList.fromArray(dllSongs)
       setSongsList(newList)
-      console.log("[v0] Doubly linked list updated with", songs.length, "songs")
+      console.log("Doubly linked list updated with", songs.length, "songs")
     }
   }, [songs])
 
@@ -177,27 +177,27 @@ export function VibesMusicApp() {
     if (!audioElement) return
 
     const handleSongEnded = () => {
-      console.log("[v0] Song ended event triggered")
-      console.log("[v0] Current song:", currentSong?.title)
-      console.log("[v0] Songs list size:", songsList.size)
+      console.log("Song ended event triggered")
+      console.log("Current song:", currentSong?.title)
+      console.log("Songs list size:", songsList.size)
       setIsPlaying(false)
 
       if (songsList.size > 1) {
-        console.log("[v0] Attempting to play next song...")
+        console.log("Attempting to play next song...")
         const nextDLLSong = songsList.next()
         if (nextDLLSong) {
           const nextSong = songs.find((s) => s.id.toString() === nextDLLSong.id)
           if (nextSong) {
-            console.log("[v0] Auto-playing next song:", nextSong.title)
+            console.log("Auto-playing next song:", nextSong.title)
             handleSongSelect(nextSong)
           } else {
-            console.warn("[v0] Next song not found in songs array")
+            console.warn("Next song not found in songs array")
           }
         } else {
-          console.warn("[v0] No next song available in doubly linked list")
+          console.warn("No next song available in doubly linked list")
         }
       } else {
-        console.log("[v0] Only one song or empty list, not auto-playing")
+        console.log("Only one song or empty list, not auto-playing")
       }
     }
 
@@ -227,27 +227,27 @@ export function VibesMusicApp() {
   }
 
   const handleSongSelect = async (song: Song) => {
-    console.log("[v0] Song selected:", song.title)
+    console.log("Song selected:", song.title)
     setCurrentSong(song)
 
     const dllSong = convertToDLLSong(song)
     songsList.setCurrentById(dllSong.id)
-    console.log("[v0] Current song set in doubly linked list:", songsList.getCurrentSong()?.title)
+    console.log("Current song set in doubly linked list:", songsList.getCurrentSong()?.title)
 
     if (audioElement) {
       audioElement.pause()
       if (isConnected) {
         audioElement.src = musicAPI.getMediaUrl(song.filename)
-        console.log("[v0] Audio source set:", audioElement.src)
+        console.log("Audio source set:", audioElement.src)
       }
       setCurrentTime(0)
 
       try {
         await audioElement.play()
         setIsPlaying(true)
-        console.log("[v0] Song started playing automatically")
+        console.log("Song started playing automatically")
       } catch (error) {
-        console.error("[v0] Auto-play failed:", error)
+        console.error("Auto-play failed:", error)
         setIsPlaying(false)
       }
     }
@@ -256,9 +256,9 @@ export function VibesMusicApp() {
     if (isConnected) {
       try {
         await musicAPI.addToPlaylist(song.id)
-        console.log("[v0] Song added to backend playlist")
+        console.log("Song added to backend playlist")
       } catch (error) {
-        console.error("[v0] Failed to add to backend playlist:", error)
+        console.error("Failed to add to backend playlist:", error)
       }
     }
   }
@@ -309,16 +309,16 @@ export function VibesMusicApp() {
         if (position === "start") {
           // Add to beginning using prepend logic
           newSongs = [song, ...playlist.songs]
-          console.log("[v0] Added song to start of playlist:", song.title)
+          console.log("Added song to start of playlist:", song.title)
         } else if (position === "end" || position === undefined) {
           // Add to end using append logic
           newSongs = [...playlist.songs, song]
-          console.log("[v0] Added song to end of playlist:", song.title)
+          console.log("Added song to end of playlist:", song.title)
         } else if (typeof position === "number") {
           // Add to specific position using insertAt logic
           const index = Math.max(0, Math.min(position - 1, playlist.songs.length))
           newSongs = [...playlist.songs.slice(0, index), song, ...playlist.songs.slice(index)]
-          console.log("[v0] Added song to position", position, "in playlist:", song.title)
+          console.log("Added song to position", position, "in playlist:", song.title)
         }
 
         return { ...playlist, songs: newSongs }
@@ -371,7 +371,7 @@ export function VibesMusicApp() {
       setError(null)
 
       if (newSongs.length === 1) {
-        console.log("[v0] Auto-playing uploaded song:", newSongs[0].title)
+        console.log("Auto-playing uploaded song:", newSongs[0].title)
         await handleSongSelect(newSongs[0])
       }
     }
@@ -383,7 +383,7 @@ export function VibesMusicApp() {
   }
 
   const handleToggleFavorite = async (song: Song) => {
-    console.log("[v0] Toggling favorite for:", song.title)
+    console.log("Toggling favorite for:", song.title)
 
     const updatedSong = { ...song, is_favorite: !song.is_favorite }
 
@@ -421,7 +421,7 @@ export function VibesMusicApp() {
   }
 
   const handleNavigateToSongs = () => {
-    console.log("[v0] Navigating to Songs view")
+    console.log("Navigating to Songs view")
     setCurrentView("library") // For now, redirect to library - could be expanded to show artists grouped view
     setSearchQuery("") // Clear search to show all songs
   }
@@ -446,62 +446,62 @@ export function VibesMusicApp() {
   }
 
   const handleSkipNext = async () => {
-    console.log("[v0] Skip next requested - using doubly linked list")
-    console.log("[v0] Current songs list size:", songsList.size)
+    console.log("Skip next requested - using doubly linked list")
+    console.log("Current songs list size:", songsList.size)
 
     if (songsList.isEmpty()) {
-      console.log("[v0] Songs list is empty")
+      console.log("Songs list is empty")
       return
     }
 
     const nextDLLSong = songsList.next()
-    console.log("[v0] Next DLL song:", nextDLLSong?.title)
+    console.log("Next DLL song:", nextDLLSong?.title)
 
     if (nextDLLSong) {
       const nextSong = songs.find((s) => s.id.toString() === nextDLLSong.id)
       if (nextSong) {
-        console.log("[v0] Playing next song from doubly linked list:", nextSong.title)
+        console.log("Playing next song from doubly linked list:", nextSong.title)
         await handleSongSelect(nextSong)
       } else {
-        console.warn("[v0] Next song not found in songs array")
+        console.warn("Next song not found in songs array")
         console.log(
-          "[v0] Available song IDs:",
+          "Available song IDs:",
           songs.map((s) => s.id.toString()),
         )
-        console.log("[v0] Looking for ID:", nextDLLSong.id)
+        console.log("Looking for ID:", nextDLLSong.id)
       }
     } else {
-      console.warn("[v0] No next song available in doubly linked list")
+      console.warn("No next song available in doubly linked list")
     }
   }
 
   const handleSkipPrev = async () => {
-    console.log("[v0] Skip previous requested - using doubly linked list")
-    console.log("[v0] Current songs list size:", songsList.size)
+    console.log("Skip previous requested - using doubly linked list")
+    console.log("Current songs list size:", songsList.size)
 
     if (songsList.isEmpty()) {
-      console.log("[v0] Songs list is empty")
+      console.log("Songs list is empty")
       return
     }
 
     const prevDLLSong = songsList.previous()
-    console.log("[v0] Previous DLL song:", prevDLLSong?.title)
+    console.log("Previous DLL song:", prevDLLSong?.title)
 
     if (prevDLLSong) {
       const prevSong = songs.find((s) => s.id.toString() === prevDLLSong.id)
       if (prevSong) {
-        console.log("[v0] Playing previous song from doubly linked list:", prevSong.title)
+        console.log("Playing previous song from doubly linked list:", prevSong.title)
         await handleSongSelect(prevSong)
       } else {
-        console.warn("[v0] Previous song not found in songs array")
+        console.warn("Previous song not found in songs array")
         console.log(
-          "[v0] Available song IDs:",
+          "Available song IDs:",
           songs.map((s) => s.id.toString()),
         )
-        console.log("[v0] Looking for ID:", prevDLLSong.id)
+        console.log("Looking for ID:", prevDLLSong.id)
       }
     } else {
-      console.warn("[v0] No previous song available in doubly linked list")
+      console.warn("No previous song available in doubly linked list")
     }
   }
 
@@ -531,13 +531,13 @@ export function VibesMusicApp() {
   )
 
   const handleArtistsView = () => {
-    console.log("[v0] Navigating to Artists view")
+    console.log("Navigating to Artists view")
     setCurrentView("library") // For now, redirect to library - could be expanded to show artists grouped view
     setSearchQuery("") // Clear search to show all songs
   }
 
   const handleDeleteSong = (songId: number) => {
-    console.log("[v0] Deleting song with ID:", songId)
+    console.log("Deleting song with ID:", songId)
 
     // Eliminar de la lista doblemente enlazada
     songsList.remove(songId.toString())

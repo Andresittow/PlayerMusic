@@ -49,7 +49,7 @@ export class DoublyLinkedList {
     }
 
     this.size++
-    console.log("[v0] Song added at the beginning:", song.title)
+    console.log("Song added at the beginning:", song.title)
   }
 
   // Agregar canción al final de la lista
@@ -71,7 +71,7 @@ export class DoublyLinkedList {
 
   insertAt(position: number, song: Song): boolean {
     if (position < 0 || position > this.size) {
-      console.error("[v0] Invalid position:", position)
+      console.error("Invalid position:", position)
       return false
     }
 
@@ -105,7 +105,7 @@ export class DoublyLinkedList {
       }
       current.prev = newNode
       this.size++
-      console.log("[v0] Song inserted at position", position, ":", song.title)
+      console.log("Song inserted at position", position, ":", song.title)
       return true
     }
 
@@ -159,7 +159,7 @@ export class DoublyLinkedList {
         }
 
         this.size--
-        console.log("[v0] Song removed:", current.data.title)
+        console.log("Song removed:", current.data.title)
         return true
       }
       current = current.next
@@ -170,7 +170,7 @@ export class DoublyLinkedList {
 
   removeAt(position: number): boolean {
     if (position < 0 || position >= this.size) {
-      console.error("[v0] Invalid position:", position)
+      console.error("Invalid position:", position)
       return false
     }
 
